@@ -49,7 +49,7 @@ public class SearchTree {
                 return true;
                 //In general case we'll use function 'findParentalPosition'.
             } else {
-                return null == this.findCorrectSon(this.findParentalPosition(value), value);
+                return null == this.getCorrectSon(this.findParentalPosition(value), value);
             }
             //There should not be questions, when the tree is empty.
         } else {
@@ -57,40 +57,50 @@ public class SearchTree {
         }
     }
 
-    public void delete(int value) {
+    /*
+     * public void delete(int value) {
         if (0 == count) {
             System.out.println("Tree is empty NAPRIMER.");
         } else {
-            TreeElement deletedElement = this.findParentalPosition(value);
-            if (null == deletedElement) {
-                System.out.println("Given value does not exist.");
-            } else {
-                TreeElement theClosestLeft = deletedElement.leftSon;
-                TreeElement theClosestRight = deletedElement.rightSon;
+            TreeElement parent = this.findParentalPosition(value);
 
-                if (null != theClosestRight) {
-                    if (null == theClosestRight.leftSon) {
-                        deletedElement.value = theClosestRight.value;
-                        deletedElement.rightSon = null;
-                    } else {
-                        while (null != theClosestRight.leftSon) {
-                            theClosestRight = theClosestRight.leftSon;
-                        }
-                        deletedElement.value = theClosestRight.value;
-                    }
-                } else if (null != theClosestLeft) {
+            // this branch is not ready yet.
+            if (value == parent.value) {
+            } else {
+                TreeElement deleted = this.getCorrectSon(parent, value);
+                if (null == deleted) {
+                    System.out.println("Given value does not exist.");
                 } else {
+                    TreeElement theClosestLeft = this.theClosestLeftSon(parent);
+                    TreeElement theClosestRight = this.theClosestRightSon(parent);
+
+                    if (null != theClosestRight) {
+                        if (null == theClosestRight.leftSon) {
+                            deletedElement.value = theClosestRight.value;
+                            deletedElement.rightSon = null;
+                        } else {
+                            while (null != theClosestRight.leftSon) {
+                                theClosestRight = theClosestRight.leftSon;
+                            }
+                            deletedElement.value = theClosestRight.value;
+                        }
+                    } else if (null != theClosestLeft) {
+                    } else {
+                    }
                 }
             }
         }
     }
+    *
+    */
 
+    
     /**
      * Finds a parent of a given value.
      *
      * @param value
-     * @return top in case, when value is in the top, the closest un-null position, 
-     * if there is not the given value, and the true parent otherwise.
+     * @return top in case, when value is in the top, the closest un-null
+     * position, if there is not the given value, and the true parent otherwise.
      */
     private TreeElement findParentalPosition(int value) {
         TreeElement result = this.top;
@@ -123,7 +133,7 @@ public class SearchTree {
      * @return null, if 'value' does not belong to the tree, or its position in
      * the structure.
      */
-    private TreeElement findCorrectSon(TreeElement treeElement, int value) {
+    private TreeElement getCorrectSon(TreeElement treeElement, int value) {
         if (value > treeElement.value) {
             return treeElement.rightSon;
         } else {
@@ -173,9 +183,6 @@ public class SearchTree {
         private TreeElement(int value) {
             this.value = value;
         }
-        private int value;
-        private TreeElement leftSon;
-        private TreeElement rightSon;
 
         /**
          * Function recursively finding the place where the insertion is
@@ -187,6 +194,7 @@ public class SearchTree {
             if (value < this.value) {
                 if (this.leftSon == null) {
                     this.leftSon = new TreeElement(value);
+                    this.leftSon.batya = this;
                     count++;
                 } else {
                     this.leftSon.insert(value);
@@ -194,6 +202,7 @@ public class SearchTree {
             } else if (value > this.value) {
                 if (this.rightSon == null) {
                     this.rightSon = new TreeElement(value);
+                    this.rightSon.batya = this;
                     count++;
                 } else {
                     this.rightSon.insert(value);
@@ -201,6 +210,11 @@ public class SearchTree {
             } else {
             }
         }
+        
+        private int value;
+        private TreeElement batya;
+        private TreeElement leftSon;
+        private TreeElement rightSon;
     }
     private int count;
     private TreeElement top;
