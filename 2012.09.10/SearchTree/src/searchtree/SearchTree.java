@@ -46,6 +46,12 @@ public class SearchTree {
         return (null != this.findPosition(value));
     }
 
+    /**
+     * Tries to establish a position of given value, if it's indeed in the tree.
+     *
+     * @param value
+     * @return a position in tree, or in case of fail -- null.
+     */
     private TreeElement findPosition(int value) {
         if (0 != this.count) {
             TreeElement temp = this.top;
@@ -62,25 +68,66 @@ public class SearchTree {
         }
     }
 
-    /*
-     * public void delete(int value) { if (0 == count) {
-     * System.out.println("Tree is empty NAPRIMER."); } else { TreeElement
-     * parent = this.findParentalPosition(value);
+    /**
+     * Tries to delete a given value from the tree.
      *
-     * // this branch is not ready yet. if (value == parent.value) { } else {
-     * TreeElement deleted = this.getCorrectSon(parent, value); if (null ==
-     * deleted) { System.out.println("Given value does not exist."); } else {
-     * TreeElement theClosestLeft = this.theClosestLeftSon(parent); TreeElement
-     * theClosestRight = this.theClosestRightSon(parent);
-     *
-     * if (null != theClosestRight) { if (null == theClosestRight.leftSon) {
-     * deletedElement.value = theClosestRight.value; deletedElement.rightSon =
-     * null; } else { while (null != theClosestRight.leftSon) { theClosestRight
-     * = theClosestRight.leftSon; } deletedElement.value =
-     * theClosestRight.value; } } else if (null != theClosestLeft) { } else { }
-     * } } } }
-     *
+     * @param value
      */
+    public void delete(int value) {
+        TreeElement deleted = this.findPosition(value);
+        if (null == deleted) {
+            // do nothing.
+        } else {
+            if (null != deleted.leftSon) {
+                TreeElement temp = this.theClosestLeftSon(deleted);
+                deleted.value = temp.value;
+                temp.delete();
+            } else if (null != deleted.rightSon) {
+                TreeElement temp = this.theClosestRightSon(deleted);
+                deleted.value = temp.value;
+                temp.delete();
+            } else {
+                deleted.delete();
+            }
+        }
+    }
+
+    /**
+     * Function, returning the closest descendant of given node from its left
+     * branch.
+     *
+     * @param element
+     * @return null if there's no branch, and the true descendant otherwise.
+     */
+    private TreeElement theClosestLeftSon(TreeElement element) {
+        TreeElement temp = element.leftSon;
+        if (temp == null) {
+            return null;
+        }
+        while (temp.rightSon != null) {
+            temp = temp.rightSon;
+        }
+        return temp;
+    }
+
+    /**
+     * Function, returning the closest descendant of given node from its right
+     * branch.
+     *
+     * @param element
+     * @return null if there's no branch, and the true descendant otherwise.
+     */
+    private TreeElement theClosestRightSon(TreeElement element) {
+        TreeElement temp = element.rightSon;
+        if (temp == null) {
+            return null;
+        }
+        while (temp.leftSon != null) {
+            temp = temp.leftSon;
+        }
+        return temp;
+    }
+
     /**
      * Class which corresponds to element of the tree.
      */
@@ -115,6 +162,22 @@ public class SearchTree {
                 }
             } else {
             }
+        }
+
+        /**
+         * Deletes a node if the tree, must be applied to leaves only.
+         */
+        private void delete() {
+            if (top == this) {
+                top.value = 0;
+            } else {
+                if (this == this.batya.leftSon) {
+                    this.batya.leftSon = null;
+                } else {
+                    this.batya.rightSon = null;
+                }
+            }
+            count--;
         }
         private int value;
         private TreeElement batya;
