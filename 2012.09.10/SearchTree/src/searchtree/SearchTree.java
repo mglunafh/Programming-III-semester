@@ -4,6 +4,9 @@
  */
 package searchtree;
 
+import java.util.Iterator;
+import java.util.LinkedList;
+
 /**
  *
  * @author Fedor Uvarychev
@@ -74,20 +77,20 @@ public class SearchTree {
      * @param value
      */
     public void delete(int value) {
-        TreeElement deleted = this.findPosition(value);
-        if (null == deleted) {
+        TreeElement victim = this.findPosition(value);
+        if (null == victim) {
             // do nothing.
         } else {
-            if (null != deleted.leftSon) {
-                TreeElement temp = this.theClosestLeftSon(deleted);
-                deleted.value = temp.value;
+            if (null != victim.leftSon) {
+                TreeElement temp = this.theClosestLeftSon(victim);
+                victim.value = temp.value;
                 temp.delete();
-            } else if (null != deleted.rightSon) {
-                TreeElement temp = this.theClosestRightSon(deleted);
-                deleted.value = temp.value;
+            } else if (null != victim.rightSon) {
+                TreeElement temp = this.theClosestRightSon(victim);
+                victim.value = temp.value;
                 temp.delete();
             } else {
-                deleted.delete();
+                victim.delete();
             }
         }
     }
@@ -126,6 +129,69 @@ public class SearchTree {
             temp = temp.leftSon;
         }
         return temp;
+    }
+
+    public class SearchTreeIterator implements Iterator {
+
+        /**
+         *
+         */
+        private SearchTreeIterator() {
+            // Initializing a 'path' to the least element of a tree. 
+            this.path = new LinkedList<>();
+            TreeElement temp = top;
+            while (null != temp) {
+                this.path.add(temp);
+                temp = temp.leftSon;
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+
+        /**
+         * Implementation of the 'next' method of 'Iterator' interface.
+         *
+         * @return elements of tree in order of growth.
+         */
+        @Override
+        public Object next() {
+            TreeElement temp = this.path.getLast();
+            int result = temp.value;
+
+            if (null == temp.leftSon) {
+                if (null == temp.rightSon) {
+                    this.path.removeLast();
+                } else {
+                    temp = temp.rightSon;
+                    while (null != temp) {
+                        this.path.add(temp);
+                        temp = temp.leftSon;
+                    }
+                }
+                return result;
+                // This case means that we have already met all children of 
+                // current node,so we push it out, move upward and then descend 
+                // to the closest son from the right side.
+            } else {
+                temp = temp.batya;
+                result = temp.value;
+                this.path.removeLast();
+                while (null != temp) {
+                    this.path.add(temp);
+                    temp = temp.leftSon;
+                }
+                return result;
+            }
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException("Not supported yet.");
+        }
+        private LinkedList<TreeElement> path;
     }
 
     /**
