@@ -4,10 +4,10 @@
  */
 package harvesters;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -31,12 +31,28 @@ public class Harvesters {
         private boolean ReachableForLars;
     }
 
-    private void getData() {
-        Scanner scanner = new Scanner("D:\\All-For-Programming\\Programming-III-semester\\2012.09.17\\HarvestersVespene-field.txt");
-        if (scanner.hasNext()) {
+    /**
+     * Test method.
+     *
+     * @return
+     */
+    public boolean[][] getVespField() {
+        return this.vespField;
+    }
+
+    /**
+     * Method which gathers informantion from the given file.
+     *
+     * @param fileName
+     * @throws FileNotFoundException
+     */
+    public void getData(String fileName) throws FileNotFoundException {
+        Scanner scanner = new Scanner(new File(fileName));
+        while (scanner.hasNext()) {
 
             //creating a matrix of ways and a list of vertices
             int size = scanner.nextInt();
+
             vespField = new boolean[size][size];
             vertices = new ArrayList<>(size);
             for (int i = 0; i < vespField.length; i++) {
@@ -49,12 +65,26 @@ public class Harvesters {
                 vespField[firstVertex][secondVertex] = true;
                 vespField[secondVertex][firstVertex] = true;
             }
+            for (int i = 0; i < vespField.length; i++) {
+                vespField[i][i] = true;
+            }
         }
     }
 
-    public boolean ifLarsCanDestroy(int LarsPos, int OctaviaPos) {
+    /**
+     *
+     * @param LarsPos
+     * @param OctaviaPos
+     * @return
+     */
+    public boolean ifLarsCanDestroy(String fileName, int LarsPos, int OctaviaPos) {
 
-        getData();
+        try {
+            getData(fileName);
+        } catch (FileNotFoundException e) {
+            System.out.println("CykN!");
+        }
+
         //queue for vertices which are to be marked as reachable.
         ArrayList<Integer> reachable = new ArrayList<>();
         reachable.add(LarsPos);
@@ -82,7 +112,6 @@ public class Harvesters {
             return false;
         }
     }
-
     private boolean[][] vespField;
     private ArrayList<Vertex> vertices;
 }
