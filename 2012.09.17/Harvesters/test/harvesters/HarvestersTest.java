@@ -5,8 +5,9 @@
 package harvesters;
 
 import java.io.FileNotFoundException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import org.junit.*;
-import static org.junit.Assert.*;
 
 /**
  *
@@ -37,7 +38,7 @@ public class HarvestersTest {
     
     @Test
     public void testGetData() throws FileNotFoundException{
-        inst.getData("test-Vespene-field.txt");
+        inst.getData("test-get-data.txt");
         
         boolean[][] temp = inst.getVespField();
         for (int i = 0; i < temp.length; i++) {
@@ -59,23 +60,35 @@ public class HarvestersTest {
     public void testIfLarsCanDestroy() throws FileNotFoundException {
         int LarsPos = 0;
         int OctaviaPos = 0;
-        
-        inst.getData("Vespene-field.txt");
+        String fileName = "test-Lars-destroys.txt";
         boolean expResult = true;
-        boolean result = inst.ifLarsCanDestroy("Vespene-field.txt", LarsPos, OctaviaPos);
+        boolean result = inst.ifLarsCanDestroy(fileName, LarsPos, OctaviaPos);
         assertEquals(expResult, result);
     }
     
+    /**
+     * Test of ifLarsCanDestroy method when Octavia is actually in isolation.
+     */
     @Test
     public void testLarsCannotDestroy() throws FileNotFoundException {
         int LarsPos = 0;
         int OctaviaPos = 4;
-        String fileName = "Vespene-field.txt";
-        inst.getData(fileName);
+        String fileName = "test-Lars-cant-destroy.txt";
         boolean result = inst.ifLarsCanDestroy(fileName, LarsPos, OctaviaPos);
         assertEquals(result, false);
                 
     }
+    
+    @Test 
+    public void testLarsCannotDestroy1() throws FileNotFoundException {
+        int LarsPos = 0;
+        int OctaviaPos = 1;
+        String fileName = "test-Lars-cant-destroy1.txt";
+        boolean result = inst.ifLarsCanDestroy(fileName, LarsPos, OctaviaPos);
+        assertEquals(result, false);
+    }
+        
+    
     /*
      * Test of the main method in situation when 
      */
