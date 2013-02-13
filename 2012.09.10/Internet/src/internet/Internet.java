@@ -26,28 +26,28 @@ public class Internet {
      * @param path
      * @throws FileNotFoundException
      */
-    public Internet(String matrixPath, String infoPath) throws FileNotFoundException {
+    public Internet(String matrixPath, String infoPath, Randomizer rnd) throws FileNotFoundException {
+        this.rand = rnd;
         Scanner matrixScan = new Scanner(new File(matrixPath));
         if (matrixScan.hasNext()) {
             int size = matrixScan.nextInt();
-            comps = new ArrayList<>(size);
-            matrix = new boolean[size][size];
+            this.comps = new ArrayList<>(size);
+            this.matrix = new boolean[size][size];
             while (matrixScan.hasNext()) {
                 int first = matrixScan.nextInt();
                 int second = matrixScan.nextInt();
-                matrix[first][second] = true;
-                matrix[second][first] = true;
+                this.matrix[first][second] = true;
+                this.matrix[second][first] = true;
             }
         }
 
         Scanner infoScan = new Scanner(new File(infoPath));
-        // OHO. PAbOTAET. HEnPABuJlbHO. 
         while (infoScan.hasNext()) {
             int num = infoScan.nextInt();
             int opSystem = infoScan.nextInt();
             int info = infoScan.nextInt();
             Computer temp = new Computer(num, opSystem, info);
-            comps.add(temp);
+            this.comps.add(temp);
             System.out.format("%d %d %d constr\n", num, opSystem, info);
         }
         System.out.println("There shall be reckoning");
@@ -58,14 +58,15 @@ public class Internet {
      * infect their neighbours.
      */
     public void update() {
-        //
+        // true in this array means we should not touch this computer on moment 
+        // 'cause method 'infestation' has been used to it.
         boolean[] flags =  new boolean[comps.size()];
         
         for (Computer comp : comps) {
             if (comp.getState() && !flags[comp.getNumber()]) {
                 for (int i = 0; i < matrix.length; i++) {
                     if (matrix[comp.getNumber()][i] && !comps.get(i).getState()) {
-                        comps.get(i).infestation();
+                        comps.get(i).infestation(this.rand);
                         flags[i] = true;
                     }
                 }
@@ -82,6 +83,9 @@ public class Internet {
     public ArrayList<Computer> getComps() {
         return comps;
     }
+    
+        
     private boolean[][] matrix;          // matrix with info about graph
     private ArrayList<Computer> comps;
+    private Randomizer rand;
 }

@@ -14,6 +14,18 @@ import static org.junit.Assert.*;
  */
 public class InternetTest {
     
+    class TestRandomizer implements Randomizer
+    {
+        @Override
+        public int nextInt(int bound) {
+            return this.rndArray[index++];
+        }
+        
+        private int[] rndArray = {13, 4, 0, 13, 20};
+        private int index;
+    };
+    
+    
     public InternetTest() {
     }
 
@@ -27,7 +39,8 @@ public class InternetTest {
     
     @Before
     public void setUp() throws FileNotFoundException {
-        inst = new Internet("internet-matrix.txt", "internet-info.txt");
+        Randomizer rand = new TestRandomizer();
+        inst = new Internet("internet-matrix.txt", "internet-info.txt", rand);
     }
     
     @After
@@ -41,9 +54,23 @@ public class InternetTest {
     public void testShow() throws FileNotFoundException {
         System.out.println("show");
         inst.update();
+        for (int i = 0; i < 3; i++) {
+            assertEquals(true, inst.getComps().get(i).getState()) ;
+            assertEquals(false, inst.getComps().get(i + 3).getState());
+        }
         
-        inst.show();
+        inst.update();
+        for (int i = 0; i < 4; i++) {
+            assertEquals(true, inst.getComps().get(i).getState());
+        }
+        assertEquals(false, inst.getComps().get(4).getState());
+        assertEquals(false, inst.getComps().get(5).getState());
         
+        inst.update();
+        for (int i = 0; i < 5; i++) {
+            assertEquals(true, inst.getComps().get(i).getState());
+        }
+        assertEquals(false, inst.getComps().get(5).getState());
     }
     
     private Internet inst;

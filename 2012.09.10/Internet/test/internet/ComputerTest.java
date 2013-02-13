@@ -40,9 +40,15 @@ public class ComputerTest {
     public void testInfestation() {
         System.out.println("infestation");
         inst = new Computer(0, 2, 0);
-        inst.infestation();
+        Randomizer rand = new Randomizer() {
+            public int nextInt(int bound) {
+                return 3;
+            }
+        };
+        inst.infestation(rand);
+        assertEquals(true, inst.getState());
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        //fail("The test case is a prototype.");
     }
     private Computer inst;
 }

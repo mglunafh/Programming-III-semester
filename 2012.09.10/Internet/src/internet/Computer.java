@@ -40,8 +40,7 @@ public class Computer {
     /**
      * Function imitating a procedure of infestation and a work of antivirus :D.
      */
-    public void infestation() {
-        Random rand = new Random();
+    public void infestation(Randomizer rand) {
         if (installedOS.getVulner() > rand.nextInt(100)) {
             isInfected = true;
         }
