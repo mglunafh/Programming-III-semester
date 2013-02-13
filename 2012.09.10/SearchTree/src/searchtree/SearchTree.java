@@ -25,6 +25,10 @@ public class SearchTree {
         return this.count;
     }
 
+    public SearchTreeIterator iterator() {
+        return new SearchTreeIterator();
+    }
+
     /**
      * Inserts a given value into the tree.
      *
@@ -58,7 +62,7 @@ public class SearchTree {
     private TreeElement findPosition(int value) {
         if (0 != this.count) {
             TreeElement temp = this.top;
-            while (value != temp.value || null != temp) {
+            while (null != temp && value != temp.value) {
                 if (value < temp.value) {
                     temp = temp.leftSon;
                 } else {
@@ -131,67 +135,48 @@ public class SearchTree {
         return temp;
     }
 
-    public class SearchTreeIterator implements Iterator {
+    public class SearchTreeIterator implements Iterator<Integer> {
 
-        /**
-         *
-         */
         private SearchTreeIterator() {
-            // Initializing a 'path' to the least element of a tree. 
-            this.path = new LinkedList<>();
-            TreeElement temp = top;
-            while (null != temp) {
-                this.path.add(temp);
-                temp = temp.leftSon;
-            }
+            this.stack = new LinkedList<>();
+            this.stack.add(top);
         }
 
+        /**
+         * Implementation of method from Iterator interface.
+         * 
+         * @return 
+         */
         @Override
         public boolean hasNext() {
-            throw new UnsupportedOperationException("Not supported yet.");
+            return (stack.size() > 0 && 0 != count);
         }
 
         /**
-         * Implementation of the 'next' method of 'Iterator' interface.
-         *
-         * @return elements of tree in order of growth.
+         * Implementation of method from Iterator interface.
+         * @return an integer value.
          */
         @Override
-        public Object next() {
-            TreeElement temp = this.path.getLast();
-            int result = temp.value;
-
-            if (null == temp.leftSon) {
-                if (null == temp.rightSon) {
-                    this.path.removeLast();
-                } else {
-                    temp = temp.rightSon;
-                    while (null != temp) {
-                        this.path.add(temp);
-                        temp = temp.leftSon;
-                    }
-                }
-                return result;
-                // This case means that we have already met all children of 
-                // current node,so we push it out, move upward and then descend 
-                // to the closest son from the right side.
-            } else {
-                temp = temp.batya;
-                result = temp.value;
-                this.path.removeLast();
-                while (null != temp) {
-                    this.path.add(temp);
-                    temp = temp.leftSon;
-                }
-                return result;
+        public Integer next() {
+            TreeElement temp = (TreeElement) stack.removeLast();
+            if (null != temp.rightSon) {
+                stack.add(temp.rightSon);
             }
+            if (null != temp.leftSon) {
+                stack.add(temp.leftSon);
+            }
+
+            return temp.value;
         }
 
+        /**
+         * This method is not supported in this version yet.
+         */
         @Override
         public void remove() {
             throw new UnsupportedOperationException("Not supported yet.");
         }
-        private LinkedList<TreeElement> path;
+        private LinkedList<TreeElement> stack;
     }
 
     /**
