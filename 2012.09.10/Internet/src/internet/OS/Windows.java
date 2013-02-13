@@ -12,7 +12,7 @@ package internet.OS;
  */
 public class Windows extends OperationSystem{
     public Windows() {
-        Windows.vulner = 15;
-        Windows.name = "windows";
+        this.vulner = 15;
+        this.name = "windows";
     }
 }

@@ -39,7 +39,7 @@ public class Internet {
                 matrix[second][first] = true;
             }
         }
-        
+
         Scanner infoScan = new Scanner(new File(infoPath));
         // OHO. PAbOTAET. HEnPABuJlbHO. 
         while (infoScan.hasNext()) {
@@ -58,10 +58,16 @@ public class Internet {
      * infect their neighbours.
      */
     public void update() {
+        //
+        boolean[] flags =  new boolean[comps.size()];
+        
         for (Computer comp : comps) {
-            for (int i = 0; i < matrix.length; i++) {
-                if (matrix[comp.getNumber()][i]) {
-                    comps.get(i).infestation();
+            if (comp.getState() && !flags[comp.getNumber()]) {
+                for (int i = 0; i < matrix.length; i++) {
+                    if (matrix[comp.getNumber()][i] && !comps.get(i).getState()) {
+                        comps.get(i).infestation();
+                        flags[i] = true;
+                    }
                 }
             }
         }

@@ -11,11 +11,11 @@ package internet.OS;
  */
 public class OperationSystem {
     public String getName() {
-        return OperationSystem.name;
+        return this.name;
     }
     public int getVulner() {
-        return OperationSystem.vulner;
+        return this.vulner;
     }
-    protected static int vulner;
-    protected static String name;
+    protected int vulner;
+    protected String name;
 }

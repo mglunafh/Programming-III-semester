@@ -40,6 +40,8 @@ public class InternetTest {
     @Test
     public void testShow() throws FileNotFoundException {
         System.out.println("show");
+        inst.update();
+        
         inst.show();
         
     }

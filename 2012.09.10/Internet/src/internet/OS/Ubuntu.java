@@ -12,7 +12,7 @@ package internet.OS;
  */
 public class Ubuntu extends OperationSystem {
     public Ubuntu() {
-        Ubuntu.vulner = 5;
-        Ubuntu.name = "ubuntu";
+        this.vulner = 5;
+        this.name = "ubuntu";
     }
 }

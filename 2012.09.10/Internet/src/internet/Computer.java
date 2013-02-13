@@ -16,24 +16,24 @@ public class Computer {
     /**
      * Class which represents a computer with operation system and ability to
      * become infested. i hope it'll work.
-     *
+     * }|{ecTka4 noJlHblN /0\
+     * Нужно запилить нормальный пул с осями и оттуда брать чертовы объескты.
      * @param string is one of 'windows' 'ubuntu' 'macos'
      */
     public Computer(int num, int opSystem, int info) {
-        number = num;
-        switch (info) {
-            case 1:
-                this.isInfected = true;
-            case 0:
-                this.isInfected = false;
+        this.number = num;
+        if (0 == info) {
+            this.isInfected = false;
+        } else {
+            this.isInfected = true;
         }
-        switch (opSystem) {
-            case 1:
-                this.installedOS = new Windows();
-            case 2:
-                this.installedOS = new Ubuntu();
-            case 3:
-                this.installedOS = new MacOS();
+        System.out.println("ololo " + opSystem);
+        if (opSystem == 1) {
+            this.installedOS = new Windows();
+        } else if (opSystem == 2) {
+            this.installedOS = new Ubuntu();
+        } else if (opSystem == 3) {
+            this.installedOS = new MacOS();
         }
     }
 
@@ -42,7 +42,7 @@ public class Computer {
      */
     public void infestation() {
         Random rand = new Random();
-        if (!isInfected && installedOS.getVulner() > rand.nextInt(100)) {
+        if (installedOS.getVulner() > rand.nextInt(100)) {
             isInfected = true;
         }
     }

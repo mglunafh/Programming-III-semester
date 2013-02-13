@@ -12,7 +12,7 @@ package internet.OS;
  */
 public class MacOS extends OperationSystem {
     public MacOS() {
-        MacOS.vulner = 1;
-        MacOS.name = "macos";
+        this.vulner = 1;
+        this.name = "macos";
     }
 }
