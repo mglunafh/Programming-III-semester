@@ -41,14 +41,13 @@ public class ComputerTest {
         System.out.println("infestation");
         inst = new Computer(0, 2, 0);
         Randomizer rand = new Randomizer() {
+            @Override
             public int nextInt(int bound) {
                 return 3;
             }
         };
         inst.infestation(rand);
         assertEquals(true, inst.getState());
-        // TODO review the generated test code and remove the default call to fail.
-        //fail("The test case is a prototype.");
     }
     private Computer inst;
 }

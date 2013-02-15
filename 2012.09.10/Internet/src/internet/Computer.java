@@ -22,12 +22,8 @@ public class Computer {
      */
     public Computer(int num, int opSystem, int info) {
         this.number = num;
-        if (0 == info) {
-            this.isInfected = false;
-        } else {
-            this.isInfected = true;
-        }
-        System.out.println("ololo " + opSystem);
+        this.isInfected = (0 != info);
+        
         if (opSystem == 1) {
             this.installedOS = new Windows();
         } else if (opSystem == 2) {
