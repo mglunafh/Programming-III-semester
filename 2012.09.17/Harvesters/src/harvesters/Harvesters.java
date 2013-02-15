@@ -28,7 +28,7 @@ public class Harvesters {
      */
     private class Vertex {
 
-        private boolean ReachableForLars;
+        private boolean reachableForLars;
     }
 
     /**
@@ -73,12 +73,11 @@ public class Harvesters {
 
     /**
      *
-     * @param LarsPos
-     * @param OctaviaPos
+     * @param larsPos
+     * @param octaviaPos
      * @return
      */
-    public boolean ifLarsCanDestroy(String fileName, int LarsPos, int OctaviaPos) {
-
+    public boolean ifLarsCanDestroy(String fileName, int larsPos, int octaviaPos) {
         try {
             getData(fileName);
         } catch (FileNotFoundException e) {
@@ -87,9 +86,9 @@ public class Harvesters {
 
         //queue for vertices which are to be marked as reachable.
         ArrayList<Integer> reachable = new ArrayList<>();
-        reachable.add(LarsPos);
+        reachable.add(larsPos);
         Iterator<Integer> iterator = reachable.iterator();
-        vertices.get(LarsPos).ReachableForLars = true;
+        vertices.get(larsPos).reachableForLars = true;
         while (iterator.hasNext()) {
             Integer next = iterator.next();
             for (int i = 0; i < vespField.length; i++) {
@@ -97,20 +96,17 @@ public class Harvesters {
                 if (vespField[next][i]) {
                     // there are all vertices Lars can reach on his vehicle
                     for (int j = 0; i < vespField.length; i++) {
-                        if (vespField[i][j] && !vertices.get(j).ReachableForLars) {
+                        if (vespField[i][j] && !vertices.get(j).reachableForLars) {
                             reachable.add(j);
-                            vertices.get(j).ReachableForLars = true;
+                            vertices.get(j).reachableForLars = true;
                         }
                     }
                 }
             }
         }
+        
         // now we can check if Lars is able to crush such significant machines
-        if (vertices.get(OctaviaPos).ReachableForLars) {
-            return true;
-        } else {
-            return false;
-        }
+        return vertices.get(octaviaPos).reachableForLars;
     }
     private boolean[][] vespField;
     private ArrayList<Vertex> vertices;
