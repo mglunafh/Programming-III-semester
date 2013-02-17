@@ -158,7 +158,7 @@ public class SearchTree {
          */
         @Override
         public Integer next() {
-            TreeElement temp = (TreeElement) stack.removeLast();
+            TreeElement temp = stack.removeLast();
             if (null != temp.rightSon) {
                 stack.add(temp.rightSon);
             }
